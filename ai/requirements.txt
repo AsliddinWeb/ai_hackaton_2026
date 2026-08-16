@@ -1,0 +1,8 @@
+fastapi>=0.115
+uvicorn[standard]>=0.34
+pydantic>=2.10
+numpy>=2.1
+opencv-python-headless>=4.10
+pillow>=11.0
+# Faza 1.3 da qo'shiladi (~2.5 GB):
+# torch, torchvision, torchxrayvision

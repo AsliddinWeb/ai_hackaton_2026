@@ -1,0 +1,87 @@
+# ShifokorAI - ishlab chiqish muhiti.
+#
+# Ko'tarish:   docker compose up -d
+# Loglar:      docker compose logs -f api
+# To'xtatish:  docker compose down
+#
+# Mobil ilova bu yerda YO'Q. Expo Go telefondan Metro bundlerga LAN orqali
+# ulanadi, uni konteynerga solish faqat tarmoq muammosi qo'shadi.
+# Ilova alohida ishga tushiriladi:  cd mobile && npx expo start
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: shifokor
+      POSTGRES_PASSWORD: shifokor
+      POSTGRES_DB: shifokor
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shifokor"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  storage:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: shifokor
+      MINIO_ROOT_PASSWORD: shifokor123
+    ports:
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # brauzer konsoli
+    volumes:
+      - storage_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: ./api
+    environment:
+      DATABASE_URL: postgresql+psycopg://shifokor:shifokor@db:5432/shifokor
+      AI_URL: http://ai:8001
+      STORAGE_ENDPOINT: http://storage:9000
+      STORAGE_KEY: shifokor
+      STORAGE_SECRET: shifokor123
+    ports:
+      # 0.0.0.0 ga chiqadi - telefon noutbukning LAN IP si orqali ulanadi
+      - "8000:8000"
+    volumes:
+      # Kod mount qilinadi: har o'zgarishda obraz qayta qurilmaydi
+      - ./api:/app
+      - shared_files:/data
+    depends_on:
+      db:
+        condition: service_healthy
+      storage:
+        condition: service_started
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  ai:
+    build: ./ai
+    environment:
+      MODEL_CACHE: /models
+    ports:
+      - "8001:8001"   # tashqaridan kerak emas, faqat nosozlikni tekshirish uchun
+    volumes:
+      - ./ai:/app
+      - ./scripts:/scripts      # sinov vositalari
+      - ./data:/host_data       # test rasmlari
+      - shared_files:/data
+      # Model vaznlari obraz ichida emas - alohida volume da.
+      # Aks holda obraz hajmi ikki barobar oshadi va har qurishda qaytadan yoziladi.
+      - model_cache:/models
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+
+volumes:
+  db_data:
+  storage_data:
+  shared_files:
+  model_cache:

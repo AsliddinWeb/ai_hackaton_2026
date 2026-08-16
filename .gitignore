@@ -1,0 +1,107 @@
+# ============ Muhit va sirlar ============
+# .env hech qachon repoga tushmaydi - unda LAN IP, kalitlar va tokenlar bo'ladi.
+.env
+.env.*
+!.env.example
+
+# ============ Python / backend ============
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+
+# Ma'lumotlar bazasi fayllari - har kimda o'ziniki
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# ============ Node / JavaScript ============
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ============ Expo / React Native ============
+.expo/
+.expo-shared/
+web-build/
+.metro-health-check*
+*.jsbundle
+
+# expo prebuild natijasi - kerak bo'lsa qayta yaratiladi
+/mobile/ios/
+/mobile/android/
+
+# Imzo kalitlari - hech qachon repoga tushmaydi
+*.jks
+*.keystore
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.cer
+
+# ============ Frontend qurish natijalari ============
+dist/
+build/
+.vite/
+.next/
+.turbo/
+.parcel-cache/
+*.tsbuildinfo
+
+# ============ AI / modellar ============
+# Xom ma'lumot va o'qitilgan modellar repoda saqlanmaydi
+ai/data/raw/
+ai/data/interim/
+*.pkl
+*.joblib
+*.h5
+*.onnx
+*.pt
+*.pth
+.ipynb_checkpoints/
+mlruns/
+wandb/
+
+# ============ Loglar va vaqtinchalik fayllar ============
+*.log
+logs/
+tmp/
+temp/
+.cache/
+
+# ============ OS ============
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+desktop.ini
+
+# ============ Muharrirlar ============
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.claude/
+
+# ============ Test rasmlari ============
+data/*.zip
+data/samples/
