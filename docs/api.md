@@ -1,6 +1,6 @@
 # API kontrakti
 
-**Asos:** `http://<LAN-IP>:8000` · Format: JSON · Autentifikatsiya: `Authorization: Bearer <token>`
+**Asos:** `http://<LAN-IP>:18300` · Format: JSON · Autentifikatsiya: `Authorization: Bearer <token>`
 
 Bu hujjat kelishuv. Yangi endpoint kerak bo’lsa — avval shu yerga yoziladi, keyin kod.
 Mobil ilova va panel shu kontrakt bo’yicha **soxta ma’lumot** bilan ishlashni boshlaydi va
@@ -264,7 +264,7 @@ data: { "case_id": 507, "status": "confirmed" }
 
 ## 6. AI xizmati (ichki)
 
-Backend chaqiradi, tashqaridan ochiq emas. Alohida konteyner: `http://ai:9000`.
+Backend chaqiradi, tashqaridan ochiq emas. Alohida konteyner: `http://ai:18301`.
 
 ### `POST /predict`
 

@@ -1,12 +1,22 @@
 # ShifokorAI - ishlab chiqish muhiti.
 #
+# PORTLAR: 18300-18305 blok. Ular ataylab standart emas - kompyuterdagi
+# boshqa loyihalarga (8000, 8080, 5432, 9000) xalaqit qilmasligi uchun.
+#
+#   18300  backend (api)
+#   18301  AI xizmati
+#   18302  PostgreSQL
+#   18303  MinIO S3 API
+#   18304  MinIO brauzer konsoli
+#   18305  Expo Metro bundler (Docker da emas)
+#
 # Ko'tarish:   docker compose up -d
 # Loglar:      docker compose logs -f api
 # To'xtatish:  docker compose down
 #
 # Mobil ilova bu yerda YO'Q. Expo Go telefondan Metro bundlerga LAN orqali
 # ulanadi, uni konteynerga solish faqat tarmoq muammosi qo'shadi.
-# Ilova alohida ishga tushiriladi:  cd mobile && npx expo start
+# Ilova alohida ishga tushiriladi:  cd mobile && npm start
 
 services:
   db:
@@ -16,7 +26,7 @@ services:
       POSTGRES_PASSWORD: shifokor
       POSTGRES_DB: shifokor
     ports:
-      - "5432:5432"
+      - "18302:5432"   # host: 18302
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
@@ -32,8 +42,8 @@ services:
       MINIO_ROOT_USER: shifokor
       MINIO_ROOT_PASSWORD: shifokor123
     ports:
-      - "9000:9000"   # S3 API
-      - "9001:9001"   # brauzer konsoli
+      - "18303:9000"   # S3 API
+      - "18304:9001"   # brauzer konsoli
     volumes:
       - storage_data:/data
     healthcheck:
@@ -46,13 +56,13 @@ services:
     build: ./api
     environment:
       DATABASE_URL: postgresql+psycopg://shifokor:shifokor@db:5432/shifokor
-      AI_URL: http://ai:8001
+      AI_URL: http://ai:18301
       STORAGE_ENDPOINT: http://storage:9000
       STORAGE_KEY: shifokor
       STORAGE_SECRET: shifokor123
     ports:
       # 0.0.0.0 ga chiqadi - telefon noutbukning LAN IP si orqali ulanadi
-      - "8000:8000"
+      - "18300:18300"
     volumes:
       # Kod mount qilinadi: har o'zgarishda obraz qayta qurilmaydi
       - ./api:/app
@@ -62,14 +72,14 @@ services:
         condition: service_healthy
       storage:
         condition: service_started
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 18300 --reload
 
   ai:
     build: ./ai
     environment:
       MODEL_CACHE: /models
     ports:
-      - "8001:8001"   # tashqaridan kerak emas, faqat nosozlikni tekshirish uchun
+      - "18301:18301"   # tashqaridan kerak emas, faqat nosozlikni tekshirish uchun
     volumes:
       - ./ai:/app
       - ./scripts:/scripts      # sinov vositalari
@@ -78,7 +88,7 @@ services:
       # Model vaznlari obraz ichida emas - alohida volume da.
       # Aks holda obraz hajmi ikki barobar oshadi va har qurishda qaytadan yoziladi.
       - model_cache:/models
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 18301 --reload
 
 volumes:
   db_data:

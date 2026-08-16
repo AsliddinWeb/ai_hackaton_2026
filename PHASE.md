@@ -76,20 +76,26 @@ Eng riskli qism — **AI zanjiri**, backend emas. Telefonda olingan plyonka foto
 
 **Kod volume orqali ulanadi.** Har o’zgarishda obrazni qayta qurmaslik uchun `./api:/app` ko’rinishida mount qilinadi va `--reload` bilan ishlatiladi.
 
-**macOS da `--network host` ishlamaydi.** Portlar aniq ko’rsatiladi: `8000:8000`. Konteyner ichidan noutbukka murojaat kerak bo’lsa — `host.docker.internal`.
+**macOS da `--network host` ishlamaydi.** Portlar aniq ko’rsatiladi: `18300:18300`. Konteyner ichidan noutbukka murojaat kerak bo’lsa — `host.docker.internal`.
 
 **GPU yo’q.** macOS da Docker GPU bermaydi, model CPU da ishlaydi. Bizning modelimiz uchun yetarli, lekin javob vaqti sekinroq — demoda buni hisobga oling.
 
 ### 0.4 — telefon ulanishi
 
-Telefon `localhost` ni ko’rmaydi. Konteyner portni `0.0.0.0` ga chiqaradi (`-p 8000:8000` shuni qiladi), telefon esa **noutbukning LAN IP** siga ulanadi:
+Telefon `localhost` ni ko’rmaydi. Konteyner portni `0.0.0.0` ga chiqaradi (`-p 18300:18300` shuni qiladi), telefon esa **noutbukning LAN IP** siga ulanadi:
 
 ```
 ipconfig getifaddr en0        →  masalan 192.168.1.42
-mobile/.env:  EXPO_PUBLIC_API_URL=http://192.168.1.42:8000
+mobile/.env:  EXPO_PUBLIC_API_URL=http://192.168.1.42:18300
 ```
 
+**Portlar 18300-18305 blokida.** Ular standart emas, chunki 8000, 8080, 5432 va 9000
+kompyuterda boshqa loyihalar tomonidan band bo'lishi mumkin - bu real muammo, biz
+xakaton davomida unga duch keldik.
+
 Xakaton Wi-Fi si qurilmalar orasini bloklasa — telefondan hotspot tarqating va noutbukni shunga ulang. **Buni demodan oldin, tinch paytda sinang.**
+
+Agar port band bo'lsa: `lsof -nP -iTCP:18300` — eski jarayon qolib ketmaganini tekshiring.
 
 ### 0.5 — test rasmlari
 

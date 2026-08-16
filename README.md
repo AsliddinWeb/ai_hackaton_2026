@@ -24,6 +24,20 @@ Bosqichlar: [PHASE.md](PHASE.md) · API kontrakti: [docs/api.md](docs/api.md)
 
 ## Ishga tushirish
 
+### Portlar
+
+Loyiha **18300-18305** blokida ishlaydi. Ular ataylab standart emas — kompyuteringizdagi
+boshqa loyihalarga (8000, 8080, 5432, 9000) xalaqit qilmasligi uchun.
+
+| Port | Nima |
+|---|---|
+| `18300` | Backend (api) |
+| `18301` | AI xizmati |
+| `18302` | PostgreSQL |
+| `18303` | MinIO S3 |
+| `18304` | MinIO brauzer konsoli |
+| `18305` | Expo Metro bundler |
+
 ### 1. Backend, AI, baza va fayl saqlash — Docker
 
 ```bash
@@ -33,7 +47,7 @@ docker compose up -d
 Tekshirish:
 
 ```bash
-curl http://localhost:8000/health
+curl http://localhost:18300/health
 ```
 
 ### 2. Hamshira ilovasi — Docker emas, to’g’ridan-to’g’ri
@@ -41,14 +55,18 @@ curl http://localhost:8000/health
 Expo Go telefondan Metro bundlerga LAN orqali ulanadi, shuning uchun u konteynerda ishlatilmaydi.
 
 ```bash
-cd mobile && npx expo start
+cd mobile && npm start
 ```
+
+Port `package.json` da yozilgan (`--port 18305`), qo’lda ko’rsatish shart emas.
 
 ### 3. Shifokor paneli
 
 ```bash
 cd panel && npm run dev
 ```
+
+Panel Faza 4 da quriladi.
 
 ## Telefonni ulash
 
@@ -61,13 +79,13 @@ ipconfig getifaddr en0
 Chiqqan manzilni `mobile/.env` ga yozing:
 
 ```
-EXPO_PUBLIC_API_URL=http://192.168.1.42:8000
+EXPO_PUBLIC_API_URL=http://192.168.1.42:18300
 ```
 
 `.env` o’zgarsa Expo ni qayta ishga tushiring — `EXPO_PUBLIC_*` bundle paytida yoziladi.
 
 **Wi-Fi qurilmalar orasini bloklasa:** telefondan hotspot tarqating va noutbukni shunga ulang.
-Yoki `npx expo start --tunnel` (sekinroq).
+Yoki `npx expo start --port 18305 --tunnel` (sekinroq).
 
 ## Qoidalar
 

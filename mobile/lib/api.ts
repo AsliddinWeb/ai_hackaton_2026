@@ -5,7 +5,7 @@
  * `.env` da noutbukning LAN IP si turishi shart:
  *
  *   ipconfig getifaddr en0        // masalan 192.168.1.42
- *   EXPO_PUBLIC_API_URL=http://192.168.1.42:8000
+ *   EXPO_PUBLIC_API_URL=http://192.168.1.42:18300
  *
  * `.env` o'zgarsa Expo ni qayta ishga tushiring — EXPO_PUBLIC_* bundle
  * paytida kodga yoziladi, ish paytida o'qilmaydi.

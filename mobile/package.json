@@ -18,10 +18,10 @@
     "typescript": "~6.0.3"
   },
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "start": "expo start --port 18305",
+    "android": "expo start --android --port 18305",
+    "ios": "expo start --ios --port 18305",
+    "web": "expo start --web --port 18305"
   },
   "private": true
 }

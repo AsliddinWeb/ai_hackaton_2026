@@ -16,7 +16,7 @@ from sqlalchemy import create_engine, text
 VERSION = "0.1.0"
 
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg://shifokor:shifokor@db:5432/shifokor")
-AI_URL = os.getenv("AI_URL", "http://ai:8001")
+AI_URL = os.getenv("AI_URL", "http://ai:18301")
 
 app = FastAPI(
     title="ShifokorAI",
@@ -67,7 +67,7 @@ async def _check_ai() -> str:
 async def health() -> dict:
     """Faza 0.4 shu endpoint bilan yopiladi.
 
-    Telefondan tekshirish: brauzerda http://<LAN-IP>:8000/health ni oching.
+    Telefondan tekshirish: brauzerda http://<LAN-IP>:18300/health ni oching.
     """
     return {
         "status": "ok",

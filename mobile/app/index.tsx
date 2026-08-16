@@ -35,7 +35,7 @@ function hintFor(error: unknown): string {
     return "Manzilda localhost turibdi. Telefon uchun bu o'zining ichki manzili.\nNoutbukning LAN IP sini yozing: ipconfig getifaddr en0";
   }
   if (error instanceof NetworkError) {
-    return "1) docker compose ps — konteynerlar ishlayaptimi\n2) Telefon va noutbuk bitta tarmoqdami\n3) Tarmoq qurilmalar orasini bloklasa — telefondan hotspot tarqating\n4) Eski jarayon 8000-portni band qilmaganmi: lsof -nP -iTCP:8000";
+    return "1) docker compose ps — konteynerlar ishlayaptimi\n2) Telefon va noutbuk bitta tarmoqdami\n3) Tarmoq qurilmalar orasini bloklasa — telefondan hotspot tarqating\n4) Eski jarayon portni band qilmaganmi: lsof -nP -iTCP:18300";
   }
   return "Backend javob berdi, lekin kutilgan shaklda emas.";
 }
